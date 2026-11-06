@@ -22,6 +22,11 @@ def get_engine() -> AsyncEngine:
     global _engine
     if _engine is None:
         settings = get_settings()
+        if not settings.DATABASE_URL:
+            raise ValueError(
+                "DATABASE_URL is not configured. "
+                "Please set DATABASE_URL in your .env or environment variables."
+            )
         _engine = create_async_engine(
             settings.DATABASE_URL,
             echo=False,
